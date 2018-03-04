@@ -10,6 +10,8 @@ public class PCA9685LED
 	private int pin=0;
 	private boolean debug = true;  // true (wahr) = 1; false (falsch) = 0
 	
+	int  LEDValue; 
+	
 	
 	//
 	// Contructor
@@ -37,6 +39,7 @@ public class PCA9685LED
 		}
 		
 		ServoBoard.setPWM(this.pin, 0, 0);
+		LEDValue = 0;
 		
 		//
 		if (debug)
@@ -52,6 +55,7 @@ public class PCA9685LED
 	public  void An()
 	{
 		ServoBoard.setPWM(pin, 0, 4095);
+		LEDValue = 100;
 		if (debug)
 		{
 	        System.out.println("LED: " + this.pin + " AN");
@@ -62,6 +66,7 @@ public class PCA9685LED
 	public  void Aus()
 	{
 		ServoBoard.setPWM(pin, 0, 0);
+		LEDValue = 0;
 		if (debug)
 		{
 	        System.out.println("LED: " + this.pin + " AUS");
@@ -72,11 +77,20 @@ public class PCA9685LED
 	public  void Dim(int value) // value 0 ..100
 	{
 		ServoBoard.setPWM(pin, 0, value*4095/100);
+		LEDValue = value;
 		if (debug)
 		{
 	        System.out.println("LED: " + this.pin + " Light " + value + "%");
 		}
 	}
+	
+	
+	public int GetLEDValue()
+	{
+		return LEDValue;
+		
+	}
+	
 	
 	
 	
@@ -91,17 +105,18 @@ public class PCA9685LED
 		
 		PCA9685LED LED_1 = new PCA9685LED(servoBoardTest, 2, true);
 	    LED_1.An(); 	
-	    TimeUnit.SECONDS.sleep(1);
+	    TimeUnit.SECONDS.sleep(10);
 	    LED_1.Aus();
 	    TimeUnit.SECONDS.sleep(1);
-	    
+	  
+	    /*
 	    for (int i = 100; i>=0; i=i-1)
 	    {
 	    	LED_1.Dim(i);
 	    	TimeUnit.MILLISECONDS.sleep(100);
 	    	
 	    	
-	    }
+	    }*/
 		
 		
 	}
