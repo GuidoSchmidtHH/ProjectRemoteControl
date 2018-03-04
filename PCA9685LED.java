@@ -99,24 +99,24 @@ public class PCA9685LED
 		// TODO Auto-generated method stub
 
 		PCA9685Board servoBoardTest; 
-		servoBoardTest = new PCA9685Board();
+		servoBoardTest = new PCA9685Board(0x41);
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
 		
 		
-		PCA9685LED LED_1 = new PCA9685LED(servoBoardTest, 2, true);
+		PCA9685LED LED_1 = new PCA9685LED(servoBoardTest, 0, true);
 	    LED_1.An(); 	
-	    TimeUnit.SECONDS.sleep(10);
+	    TimeUnit.SECONDS.sleep(1);
 	    LED_1.Aus();
 	    TimeUnit.SECONDS.sleep(1);
 	  
-	    /*
+	    
 	    for (int i = 100; i>=0; i=i-1)
 	    {
 	    	LED_1.Dim(i);
 	    	TimeUnit.MILLISECONDS.sleep(100);
 	    	
 	    	
-	    }*/
+	    }
 		
 		
 	}

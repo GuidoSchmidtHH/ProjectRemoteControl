@@ -6,8 +6,17 @@ import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 public class PCA9685Test 
 {
 	
-	private static PCA9685Board servoBoardTest; 
-
+	private  PCA9685Board servoBoardTest; 
+	 
+	
+	public  PCA9685Test(PCA9685Board servoBoardTest)
+	{
+		
+		this.servoBoardTest = servoBoardTest;
+	}
+	
+	
+	
 	public  void testServo (int pin, int min, int max) throws UnsupportedBusNumberException, InterruptedException
 	{
 		 
@@ -94,24 +103,37 @@ public class PCA9685Test
 	{
 		// TODO Auto-generated method stub
 		
-		servoBoardTest = new PCA9685Board();
+		PCA9685Board  servoBoardTest; 
+		PCA9685Board servoBoardTest2; 
+		
+		
+		servoBoardTest = new PCA9685Board(0x40);
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
-		
-		
-        PCA9685Test testbucket = new PCA9685Test(); 
+		PCA9685Test testbucket = new PCA9685Test(servoBoardTest); 
 		
         
 //      Servo FS90 = 130, 590
 //      Fahrtenregler = 300, 560 (volksregler 1)
 //      Servo MC410 = 214,585
         
-        testbucket.testServo(1, 130,590);
+        //testbucket.testServo(1, 130,590);
 		
 		
+        testbucket.testServo(3, 214,585);
+        
 		//testbucket.testMotor(3, 300, 560);
 		
 		
 		
+        
+		servoBoardTest2 = new PCA9685Board(0x41);
+		servoBoardTest2.setPWMFreq(60); // Set frequency to 60 Hz
+		
+		
+        PCA9685Test testbucket2 = new PCA9685Test(servoBoardTest2); 
+        testbucket2.testServo(1, 130,590);
+        
+        
 
 	}
 

@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -12,8 +13,10 @@ import javax.swing.SwingUtilities;
 import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
 
 /**
- * @web http://helloraspberrypi.blogspot.com/
+ * Test GUI for PCA
  */
+
+
 public class PCA9685TestGUI extends JFrame 
 implements ActionListener
 {
@@ -39,11 +42,11 @@ implements ActionListener
 
 
 		PCA9685Board servoBoardTest; 
-		servoBoardTest = new PCA9685Board();
+		servoBoardTest = new PCA9685Board(0x41);
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
 
 
-		LED_1 = new PCA9685LED(servoBoardTest, 2, true);
+		LED_1 = new PCA9685LED(servoBoardTest, 3, true);
 
 
 	}
