@@ -1,8 +1,16 @@
 
 Project
 Remote Control @ Raspberry Pi
-=============================
+===============================
 
+Eclipse Installieren
+--------------------
+
+sudo apt-get update
+
+sudo apt-get install eclipse
+
+projekt anlegen, jre 1.5 Minimum
 
 
 
@@ -31,14 +39,21 @@ import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
 
 
-Swing Designer @ Eclipse
+PCA9685 Board aktivieren
 ------------------------
 
-help/Install New Software/Download.eclipse.org/releases/indigo 
+sudo raspi config
 
-Install:
+... Interfacing options/SPI und I2C aktivieren
 
-general purpose tools/Swing Designer & Windows Designer
+
+
+
+
+
+
+
+
 
 
 

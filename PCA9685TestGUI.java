@@ -46,7 +46,7 @@ implements ActionListener
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
 
 
-		LED_1 = new PCA9685LED(servoBoardTest, 3, true);
+		LED_1 = new PCA9685LED(servoBoardTest, 15, true);
 
 
 	}
@@ -77,7 +77,6 @@ implements ActionListener
 		getContentPane().add(buttonHello, BorderLayout.PAGE_END);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		textArea.setText("An/ Aus");

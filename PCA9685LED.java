@@ -92,6 +92,50 @@ public class PCA9685LED
 	}
 	
 	
+	public  void Blink() 
+	{
+		LEDValue = 101;
+		
+		if (debug)
+		{
+	        System.out.println("LED: " + this.pin + " Blink");
+		}
+		
+		
+		Thread thread = new Thread(){
+		    public void run()
+		    {
+		    	
+		     while (LEDValue == 101)
+		     {
+		    	 ServoBoard.setPWM(pin, 0, 4095); 
+		    	 try 
+		    	 {
+					TimeUnit.SECONDS.sleep(1);
+				 } catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	 ServoBoard.setPWM(pin, 0, 0); 
+		    	 try 
+		    	 {
+					TimeUnit.SECONDS.sleep(1);
+				 } catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    	 
+		    	 
+		     }
+		    }
+		  };
+
+		  thread.start();
+		
+		
+		
+	}
+	
 	
 	
 	public static void main(String[] args) throws UnsupportedBusNumberException, InterruptedException 
@@ -108,7 +152,13 @@ public class PCA9685LED
 	    TimeUnit.SECONDS.sleep(1);
 	    LED_1.Aus();
 	    TimeUnit.SECONDS.sleep(1);
+	    
+	    LED_1.Blink();
+	    TimeUnit.SECONDS.sleep(10);
 	  
+	    LED_1.Aus();
+	    
+	    /*
 	    
 	    for (int i = 100; i>=0; i=i-1)
 	    {
@@ -117,6 +167,7 @@ public class PCA9685LED
 	    	
 	    	
 	    }
+	    */
 		
 		
 	}
