@@ -3,6 +3,10 @@ Project
 Remote Control @ Raspberry Pi
 ===============================
 
+passwort ändern
+---------------
+
+
 Eclipse Installieren
 --------------------
 
@@ -12,21 +16,27 @@ sudo apt-get install eclipse
 
 projekt anlegen, jre 1.5 Minimum
 
+//webtools Java EE 
+
+sudo apt-get update
+sudo apt-get install eclipse-wtp-webtools
+sudo apt-get install eclipse-wtp-servertools
+
 
 
 PI4J Installation
 -----------------
 
-Install Java Classes to support I2C on raspberry Pi.
+//Install Java Classes to support I2C on raspberry Pi.
 
-http://pi4j.com/install.html
+//http://pi4j.com/install.html
 
 curl -s get.pi4j.com | sudo bash
 
 PI4J @ Eclipse
 --------------
 
-Add PI4J to Java Build Path.
+//Add PI4J to Java Build Path.
 
 Project/Properties/Java Build Path/Libraries/
 
@@ -42,14 +52,80 @@ import com.pi4j.io.i2c.I2CFactory;
 PCA9685 Board aktivieren
 ------------------------
 
-sudo raspi config
+//sudo raspi config
 
 ... Interfacing options/SPI und I2C aktivieren
 
+Apache Installieren
+-------------------
+
+sudo apt-get install apache2
+
+sudo mkdir /var/www/remote
+sudo chown pi.www-data /var/www/remote
+sudo chmod 2750 /var/www/remote
+
+sudo usermod -a -G www-data pi
+
+suche /etc/apache/sites-available/default...
+
+sudo nano
+
+#remote control dir
+Alias /remote /var/www/remote
+<Directory /var/www/remote>
+     DirectoryIndex control.html
+</Directory>
+
+sudo service apache2 reload     
+
+HTML applet
+----
+
+<html>
+<head>
+<meta content="text/html; charset=ISO-8859-1"
+http-equiv="content-type">
+<title>Remote Control</title>
+</head>
+<body>
+
+<h1> REMOTE CONTROL </h1>
+
+<applet codebase="" code="PCA9685TestApplet.class" height="400" width="500"></applet>
+</body>
+</html>
+
+Browser java plugins aktivieren
+-------------------------------
+
+sudo apt-get install icedtea-plugin  //doesnt work
 
 
+mysql Installieren
+------------------
+
+// http://www.raspberry-projects.com/pi/software_utilities/web-servers/mysql
+
+sudo apt-get install mysql-server
+
+//sql promt
+
+sudo mysql -u root -p
 
 
+//root 
+//https://kofler.info/root-login-problem-mit-mariadb/ 
+//
+update mysql.user set password=password('*******') where user='root';
+flush privileges;
+update mysql.user set plugin='' where user='root';
+flush privileges;
+
+
+//Create Database
+
+CREATE DATABASE MY_DATABASE_NAME;
 
 
 
