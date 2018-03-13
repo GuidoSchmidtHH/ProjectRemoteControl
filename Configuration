@@ -3,6 +3,13 @@ Project
 Remote Control @ Raspberry Pi
 ===============================
 
+// Packages to Install
+--> https://packages.debian.org/jessie/
+
+//Nutzer einrichten:
+--> https://www.elektronik-kompendium.de/sites/raspberry-pi/2007011.htm
+
+
 passwort ändern
 ---------------
 
@@ -17,10 +24,16 @@ sudo apt-get install eclipse
 projekt anlegen, jre 1.5 Minimum
 
 //webtools Java EE 
+--> https://packages.debian.org/jessie/devel/
+
 
 sudo apt-get update
+sudo apt-get install eclipse-wtp
+sudo apt-get install eclipse-jdt
 sudo apt-get install eclipse-wtp-webtools
-sudo apt-get install eclipse-wtp-servertools
+sudo apt-get install eclipse-wtp-servertools   ??
+sudo apt-get install eclipse-wtp-ws
+sudo apt-get install eclipse-mylyn-tasks-github  ??
 
 
 
@@ -77,35 +90,40 @@ Alias /remote /var/www/remote
      DirectoryIndex control.html
 </Directory>
 
-sudo service apache2 reload     
+sudo service apache2 reload  
 
-HTML applet
-----
+--> http://localhost
+--> http://localhost/remote   
 
-<html>
-<head>
-<meta content="text/html; charset=ISO-8859-1"
-http-equiv="content-type">
-<title>Remote Control</title>
-</head>
-<body>
 
-<h1> REMOTE CONTROL </h1>
+TOMCAT Installieren
+-------------------
 
-<applet codebase="" code="PCA9685TestApplet.class" height="400" width="500"></applet>
-</body>
-</html>
+sudo apt-get update
+sudo apt-get install tomcat8
+sudo apt-get install tomcat8*
 
-Browser java plugins aktivieren
--------------------------------
+--> http://localhost:8080
 
-sudo apt-get install icedtea-plugin  //doesnt work
+
+//http://raspberry-javame.blogspot.de/2015/07/tomcat-auf-dem-rapbery-pi.html
+sudo useradd tomcat
+sudo passwd tomcat
+
+sudo usermod -a -G i2c tomcat  // tomcat kann auf ressourcen zugreifen
+sudo usermod -a -G gpio tomcat
+
+
+in --> etc/tomcat8/tomcat-users.xml  einfügen
+
+<role rolename="manager-gui"/>
+<user username="tomcat" password="Ph10t10n" roles="manager-gui"/>
 
 
 mysql Installieren
 ------------------
 
-// http://www.raspberry-projects.com/pi/software_utilities/web-servers/mysql
+-->http://www.raspberry-projects.com/pi/software_utilities/web-servers/mysql
 
 sudo apt-get install mysql-server
 
@@ -126,6 +144,55 @@ flush privileges;
 //Create Database
 
 CREATE DATABASE MY_DATABASE_NAME;
+
+
+VNC Installieren
+----------------
+
+// remote access
+
+--> https://www.realvnc.com/de/connect/docs/raspberry-pi.html#raspberry-pi-setup
+
+sudo apt-get update
+sudo apt-get install realvnc-vnc-server
+sudo apt-get install realvnc-vnc-viewer
+Menu > Preferences > Raspberry Pi Configuration > Interfaces and make sure VNC is set to Enabled.
+
+sudo systemctl start vncserver-x11-serviced.service
+sudo systemctl stop vncserver-x11-serviced.service
+
+
+port 5900
+
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+Links
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+// java ME 8
+--> http://www.oracle.com/technetwork/articles/java/cruz-gpio-2295970.html
+
+// Adafruit stuff using pi4j
+--> https://community.oracle.com/docs/DOC-914698
+
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+BACKUP
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+// java ME 8
+--> http://www.oracle.com/technetwork/articles/java/cruz-gpio-2295970.html
+
+
+
+
+
+
+Browser java plugins aktivieren
+-------------------------------
+
+sudo apt-get install icedtea-plugin  //doesnt work
+
 
 
 
