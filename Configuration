@@ -72,7 +72,14 @@ PCA9685 Board aktivieren
 Apache Installieren
 -------------------
 
+sudo apt-get update
 sudo apt-get install apache2
+sudo apt-get install apache2-doc apache2-utils
+
+sudo apt-get install libapache2-mod-php php php-pear // gibt es nicht php5-xcache
+sudo apt-get install php-mysql
+
+
 
 sudo mkdir /var/www/remote
 sudo chown pi.www-data /var/www/remote
@@ -126,15 +133,16 @@ mysql Installieren
 -->http://www.raspberry-projects.com/pi/software_utilities/web-servers/mysql
 
 sudo apt-get install mysql-server
+sudo apt-get install mysql-client
 
 //sql promt
 
 sudo mysql -u root -p
 
 
-//root 
-//https://kofler.info/root-login-problem-mit-mariadb/ 
-//
+//user root 
+-->https://kofler.info/root-login-problem-mit-mariadb/ 
+
 update mysql.user set password=password('*******') where user='root';
 flush privileges;
 update mysql.user set plugin='' where user='root';
@@ -144,6 +152,39 @@ flush privileges;
 //Create Database
 
 CREATE DATABASE MY_DATABASE_NAME;
+
+
+PHPMyAdmin installieren
+-----------------------
+
+--> https://pimylifeup.com/raspberry-pi-mysql-phpmyadmin/
+--> http://lastbug.net/blog/2016/01/23/install-apache-php-and-mysql-and-phpmyadmin-on-raspberry-pi/
+
+//
+//mysql admin opberfläche
+//
+
+sudo apt-get install python-mysqldb
+
+sudo mysql -u root -p
+  GRANT ALL PRIVILEGES ON mydb.* TO 'pi'@'localhost' IDENTIFIED BY '*******';
+  GRANT ALL PRIVILEGES ON mydb.* TO 'root'@'localhost' IDENTIFIED BY '*******';
+  flush privileges;
+
+sudo apt-get install phpmyadmin
+
+nano /etc/apache2/apache2.conf
+  last line: Include /etc/phpmyadmin/apache.conf
+/etc/init.d/apache2 restart
+
+// Managementoberfläche
+//
+--> http://localhost/phpmyadmin/ 
+user: root
+
+
+java and mysql
+--------------
 
 
 
@@ -177,30 +218,6 @@ Links
 
 // Adafruit stuff using pi4j
 --> https://community.oracle.com/docs/DOC-914698
-
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-BACKUP
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-
-// java ME 8
---> http://www.oracle.com/technetwork/articles/java/cruz-gpio-2295970.html
-
-
-
-
-
-
-Browser java plugins aktivieren
--------------------------------
-
-sudo apt-get install icedtea-plugin  //doesnt work
-
-
-
-
-
-
 
 
 
