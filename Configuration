@@ -136,7 +136,6 @@ sudo apt-get install mysql-server
 sudo apt-get install mysql-client
 
 //sql promt
-
 sudo mysql -u root -p
 
 
@@ -150,8 +149,10 @@ flush privileges;
 
 
 //Create Database
-
 CREATE DATABASE MY_DATABASE_NAME;
+
+//Restart MySql
+sudo service mysql restart
 
 
 PHPMyAdmin installieren
@@ -186,6 +187,13 @@ user: root
 java and mysql
 --------------
 
+//com.mysql.jdbc.Driver
+
+Get the platform-independent version of the MySQL Connector/J JDBC driver. 
+Place the  mysql-connector-java-5.1.26-bin.jar (ver. number may vary) in the /usr/share/java/ directory. 
+
+
+sudo cp /opt/Wolfram/WolframEngine/11.0/SystemFiles/Links/DatabaseLink/Java/mysql-connector-java-5.1.38-bin.jar /usr/share/java/
 
 
 
