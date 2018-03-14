@@ -44,8 +44,6 @@ implements ActionListener
 		PCA9685Board servoBoardTest; 
 		servoBoardTest = new PCA9685Board(0x41);
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
-
-
 		LED_1 = new PCA9685LED(servoBoardTest, 15, true);
 
 

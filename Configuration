@@ -3,130 +3,130 @@ Project
 Remote Control @ Raspberry Pi
 ===============================
 
+// *user: pi
+// *passwd: raspberry (standard to be changed)
+
+
 // Packages to Install
 --> https://packages.debian.org/jessie/
 
-//Nutzer einrichten:
+// Nutzer einrichten:
 --> https://www.elektronik-kompendium.de/sites/raspberry-pi/2007011.htm
 
 
-passwort ändern
+Passwort ändern
 ---------------
 
-
+--------------------
 Eclipse Installieren
 --------------------
 
-sudo apt-get update
-
+sudo apt-get update/ upgrade
 sudo apt-get install eclipse
 
-projekt anlegen, jre 1.5 Minimum
+// projekt anlegen, jre 1.5 Minimum
 
-//webtools Java EE 
+// webtools 
+// github
 --> https://packages.debian.org/jessie/devel/
-
 
 sudo apt-get update
 sudo apt-get install eclipse-wtp
 sudo apt-get install eclipse-jdt
 sudo apt-get install eclipse-wtp-webtools
-sudo apt-get install eclipse-wtp-servertools   ??
+sudo apt-get install eclipse-wtp-servertools   
 sudo apt-get install eclipse-wtp-ws
-sudo apt-get install eclipse-mylyn-tasks-github  ??
+sudo apt-get install eclipse-mylyn-tasks-github  
 
-
-
+-----------------
 PI4J Installation
 -----------------
 
-//Install Java Classes to support I2C on raspberry Pi.
-
-//http://pi4j.com/install.html
+// Install Java Classes to support I2C on Raspberry Pi.
+--> http://pi4j.com/install.html
 
 curl -s get.pi4j.com | sudo bash
 
+--------------
 PI4J @ Eclipse
 --------------
 
-//Add PI4J to Java Build Path.
+// Add PI4J to Java Build Path.
 
-Project/Properties/Java Build Path/Libraries/
+--> Project/Properties/Java Build Path/Libraries/
+add all files from /opt/pi4j/lib all libs (4 jar files)
 
-add from /opt/pi4j/lib all libs (4 jar files)
-
-import:
-
-import com.pi4j.io.i2c.I2CBus;
-import com.pi4j.io.i2c.I2CDevice;
-import com.pi4j.io.i2c.I2CFactory;
+   - import com.pi4j.io.i2c.I2CBus;
+   - import com.pi4j.io.i2c.I2CDevice;
+   - import com.pi4j.io.i2c.I2CFactory;
 
 
+------------------------
 PCA9685 Board aktivieren
 ------------------------
 
-//sudo raspi config
+sudo raspi config
+   - Interfacing options/SPI und I2C aktivieren
 
-... Interfacing options/SPI und I2C aktivieren
-
+-------------------
 Apache Installieren
 -------------------
+// webserver, php
 
 sudo apt-get update
 sudo apt-get install apache2
 sudo apt-get install apache2-doc apache2-utils
-
-sudo apt-get install libapache2-mod-php php php-pear // gibt es nicht php5-xcache
+sudo apt-get install libapache2-mod-php php php-pear // php5-xcache ?
 sudo apt-get install php-mysql
 
-
-
+// web Verzeichnis anlegen
 sudo mkdir /var/www/remote
 sudo chown pi.www-data /var/www/remote
 sudo chmod 2750 /var/www/remote
-
 sudo usermod -a -G www-data pi
 
-suche /etc/apache/sites-available/default...
+sudo nano /etc/apache/sites-available/default...
 
-sudo nano
-
-#remote control dir
-Alias /remote /var/www/remote
-<Directory /var/www/remote>
-     DirectoryIndex control.html
-</Directory>
+   #remote control dir
+   Alias /remote /var/www/remote
+   <Directory /var/www/remote>
+      DirectoryIndex control.html
+   </Directory>
 
 sudo service apache2 reload  
+
+// Apache Aufruf:
 
 --> http://localhost
 --> http://localhost/remote   
 
-
+-------------------
 TOMCAT Installieren
 -------------------
+// webserver, java
 
 sudo apt-get update
 sudo apt-get install tomcat8
 sudo apt-get install tomcat8*
 
+
+// Tomcat Aufruf
 --> http://localhost:8080
 
+// Management page
+// *user: tomcat
+--> http://raspberry-javame.blogspot.de/2015/07/tomcat-auf-dem-rapbery-pi.html
 
-//http://raspberry-javame.blogspot.de/2015/07/tomcat-auf-dem-rapbery-pi.html
 sudo useradd tomcat
 sudo passwd tomcat
-
-sudo usermod -a -G i2c tomcat  // tomcat kann auf ressourcen zugreifen
+sudo usermod -a -G i2c tomcat  // Tomcat kann auf Ressourcen zugreifen
 sudo usermod -a -G gpio tomcat
 
-
 in --> etc/tomcat8/tomcat-users.xml  einfügen
+   <role rolename="manager-gui"/>
+   <user username="tomcat" password="*******" roles="manager-gui"/>
 
-<role rolename="manager-gui"/>
-<user username="tomcat" password="*******" roles="manager-gui"/>
-
-
+------------------
 mysql Installieren
 ------------------
 
@@ -139,9 +139,11 @@ sudo apt-get install mysql-client
 sudo mysql -u root -p
 
 
-//user root 
+//*user: root 
 -->https://kofler.info/root-login-problem-mit-mariadb/ 
 
+
+// do also with 'pi'
 update mysql.user set password=password('*******') where user='root';
 flush privileges;
 update mysql.user set plugin='' where user='root';
@@ -155,54 +157,52 @@ CREATE DATABASE MY_DATABASE_NAME;
 sudo service mysql restart
 
 
+-----------------------
 PHPMyAdmin installieren
 -----------------------
+//mysql admin opberfläche
 
 --> https://pimylifeup.com/raspberry-pi-mysql-phpmyadmin/
 --> http://lastbug.net/blog/2016/01/23/install-apache-php-and-mysql-and-phpmyadmin-on-raspberry-pi/
 
-//
-//mysql admin opberfläche
-//
-
 sudo apt-get install python-mysqldb
 
 sudo mysql -u root -p
-  GRANT ALL PRIVILEGES ON mydb.* TO 'pi'@'localhost' IDENTIFIED BY '*******';
-  GRANT ALL PRIVILEGES ON mydb.* TO 'root'@'localhost' IDENTIFIED BY '*******';
-  flush privileges;
+   GRANT ALL PRIVILEGES ON mydb.* TO 'pi'@'localhost' IDENTIFIED BY '*******';
+   GRANT ALL PRIVILEGES ON mydb.* TO 'root'@'localhost' IDENTIFIED BY '*******';
+   flush privileges;
 
 sudo apt-get install phpmyadmin
 
 nano /etc/apache2/apache2.conf
   last line: Include /etc/phpmyadmin/apache.conf
+
 /etc/init.d/apache2 restart
 
 // Managementoberfläche
-//
 --> http://localhost/phpmyadmin/ 
-user: root
+// *user: root
 
-
+--------------
 java and mysql
 --------------
+// Get the platform-independent version of the MySQL Connector/J JDBC driver. 
+// Place the  mysql-connector-java-5.xxx.xxxx-bin.jar in the /usr/share/java/ directory. 
 
-//com.mysql.jdbc.Driver
+--> https://dev.mysql.com/downloads/connector/j/
+sudo cp /home/pi/workspace/MySqlConnector/mysql-connector-java-5.1.46/mysql-connector-java-5.1.46.jar /usr/share/java/
 
-Get the platform-independent version of the MySQL Connector/J JDBC driver. 
-Place the  mysql-connector-java-5.1.26-bin.jar (ver. number may vary) in the /usr/share/java/ directory. 
-
-
-sudo cp /opt/Wolfram/WolframEngine/11.0/SystemFiles/Links/DatabaseLink/Java/mysql-connector-java-5.1.38-bin.jar /usr/share/java/
-
+add to Build Path in Eclipse
 
 
+// Test Tabelle
+sudo mysql -u root -p
+grant all on Test.* to pi@localhost;
 
+----------------
 VNC Installieren
 ----------------
-
 // remote access
-
 --> https://www.realvnc.com/de/connect/docs/raspberry-pi.html#raspberry-pi-setup
 
 sudo apt-get update
@@ -210,11 +210,15 @@ sudo apt-get install realvnc-vnc-server
 sudo apt-get install realvnc-vnc-viewer
 Menu > Preferences > Raspberry Pi Configuration > Interfaces and make sure VNC is set to Enabled.
 
+// Start/Stop VNC
 sudo systemctl start vncserver-x11-serviced.service
 sudo systemctl stop vncserver-x11-serviced.service
 
-
-port 5900
+// Access:
+// *port 5900
+// *user: pi
+// VNC Account
+// *user: standard email
 
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
