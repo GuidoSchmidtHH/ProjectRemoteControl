@@ -8,6 +8,8 @@ class RemCtrlDBTest
 {  
 
 	static PCA9685LED LED_1;
+	static Scanner sc ;
+	
 	
 	public static void main(String args[])
 	{  
@@ -17,7 +19,7 @@ class RemCtrlDBTest
 			PCA9685Board servoBoardTest; 
 			servoBoardTest = new PCA9685Board(0x41);
 			servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
-			LED_1 = new PCA9685LED(servoBoardTest, 15, true);
+			LED_1 = new PCA9685LED(servoBoardTest, 0, true);
 			
 			try 
 			{
@@ -29,7 +31,7 @@ class RemCtrlDBTest
 				// handle the error
 			}
 
-			 Scanner sc = new Scanner(System.in);
+			 sc = new Scanner(System.in);
 			 System.out.print("Password:");
 			 String passwd = sc.next();
 			 //System.out.println(passwd);

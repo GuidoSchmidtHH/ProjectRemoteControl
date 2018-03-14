@@ -1,4 +1,5 @@
 
+===============================
 Project
 Remote Control @ Raspberry Pi
 ===============================
@@ -182,6 +183,9 @@ nano /etc/apache2/apache2.conf
 // Managementoberfläche
 --> http://localhost/phpmyadmin/ 
 // *user: root
+
+// Config
+sudo nano  /etc/phpmyadmin/config-db.php 
 
 --------------
 java and mysql

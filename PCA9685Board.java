@@ -104,7 +104,8 @@ public class PCA9685Board
 	 */
 	public void setPWM(int channel, int on, int off) throws IllegalArgumentException 
 	{
-		if (channel < 0 || channel > 15) {
+		if (channel < 0 || channel > 15) 
+		{
 			throw new IllegalArgumentException("Channel must be in [0, 15]");
 		}
 		if (on < 0 || on > 4095) {
@@ -116,16 +117,28 @@ public class PCA9685Board
 		if (on > off) {
 			throw new IllegalArgumentException("Off must be greater than On");
 		}
-		try {
+		try 
+		{
 			servoDriver.write(LED0_ON_L + 4 * channel, (byte) (on & 0xFF));
 			servoDriver.write(LED0_ON_H + 4 * channel, (byte) (on >> 8));
 			servoDriver.write(LED0_OFF_L + 4 * channel, (byte) (off & 0xFF));
 			servoDriver.write(LED0_OFF_H + 4 * channel, (byte) (off >> 8));
-		} catch (IOException ioe) {
+			
+		} catch (IOException ioe) 
+		{
 			ioe.printStackTrace();
 		}
 	}
 
+	
+	public void getPWM (int channel)
+	{
+		
+		// to be done
+		
+		
+	}
+	
 		
 	public static void main(String... args) throws I2CFactory.UnsupportedBusNumberException, InterruptedException 
 	{
