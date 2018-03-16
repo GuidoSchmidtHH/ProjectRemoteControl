@@ -17,6 +17,7 @@
 //    Servo FS90 = 130, 590
 //    Fahrtenregler = 300, 560 (volksregler 1)
 //    Servo MC410 = 214,585
+//    Multiplex Servo 942383 = 100,700
 // --------------------------------------------------
 
 public class PCA9685Servo 
