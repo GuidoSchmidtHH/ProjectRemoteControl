@@ -109,7 +109,7 @@ public class PCA9685Test
 		// TODO Auto-generated method stub
 		
 		PCA9685Board  servoBoardTest; 
-		PCA9685Board servoBoardTest2; 
+	//	PCA9685Board servoBoardTest2; 
 		
 		
 		servoBoardTest = new PCA9685Board(0x40);
@@ -125,7 +125,7 @@ public class PCA9685Test
         //testbucket.testServo(1, 130,590);
 		
 		
-        testbucket.testServo(15, 100,700);
+        testbucket.testServo(3, 130,590);
         
 		//testbucket.testMotor(3, 300, 560);
 		

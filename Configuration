@@ -224,6 +224,14 @@ sudo systemctl stop vncserver-x11-serviced.service
 // VNC Account
 // *user: standard email
 
+------------------------------
+Java HTTP Server in EClipse
+------------------------------
+
+You need to add an access rule "Accessible" for the pattern com/sun/net/httpserver/**
+in Java Java Build Path 
+
+
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Links
