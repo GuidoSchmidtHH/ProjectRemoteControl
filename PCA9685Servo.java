@@ -39,10 +39,15 @@ public class PCA9685Servo
 	public PCA9685Servo(PCA9685Board ServoBoard, int pin, int servoMin, int servoMax, boolean debug)
 	{
 		
-		if ((servoMin < servoMax) && (servoMin >0) && (servoMax < 4096))
+		if ((servoMin < servoMax) && (servoMin >=0) && (servoMax < 4096))
 		{
 			this.servoMax = servoMax;
 			this. servoMin = servoMin;
+		}
+		else
+		{
+			//error?
+			
 		}
 			
 		if (ServoBoard != null)
@@ -63,9 +68,20 @@ public class PCA9685Servo
 			this.pin = 0;
 		}
 		
-		GotoNeutral();
 		
-		//
+		// LED
+		if (this.servoMax == 4095)
+		{
+			
+			GotoMin();
+		}
+		else // SERVO
+		{
+		
+		   GotoNeutral();
+		
+		}
+		
 		
 		if (debug)
 		{
@@ -86,7 +102,7 @@ public class PCA9685Servo
 		ServoBoard.setPWM(pin, 0, servoMin); 
 		if (debug)
 		{
-	       System.out.println("Servo value: min") ;
+	       System.out.println("Servo: "+ pin+ " min") ;
 		   
 		}
 				
@@ -97,7 +113,7 @@ public class PCA9685Servo
 		ServoBoard.setPWM(pin, 0, servoMax); 
 		if (debug)
 		{
-	       System.out.println("Servo value: max") ;
+	       System.out.println("Servo: "+ pin+ " max") ;
 		   
 		}
 				
@@ -108,7 +124,7 @@ public class PCA9685Servo
 		ServoBoard.setPWM(pin, 0, (int)(servoMin + (servoMax - servoMin)/2));
 		if (debug)
 		{
-	       System.out.println("Servo value: neutral") ;
+	       System.out.println("Servo: " + pin+ " neutral") ;
 		   
 		}
 				
@@ -123,7 +139,7 @@ public class PCA9685Servo
 				
 		if (debug)
 		{
-	       System.out.println("Servo value: " + value);
+	       System.out.println("Servo: " + pin+ " value: "  + value);
 		   
 		}
 		
@@ -141,7 +157,7 @@ public class PCA9685Servo
 		
 		if (debug)
 		{
-	       System.out.println("Servo value: "+ radpos + " (" + value + " Degree)") ;
+	       System.out.println("Servo: "+ pin+  " value: " +  radpos + " (" + value + " Degree)") ;
 		   
 		}
 		ServoBoard.setPWM(pin, 0, radpos ); 
@@ -158,7 +174,7 @@ public class PCA9685Servo
 		ServoBoard.setPWM(pin, 0, servoMin + (value + 100)*(servoMax - servoMin)/200 ); 
 		if (debug)
 		{
-	       System.out.println("Speed value: " + value) ;
+	       System.out.println("Servo: "+ pin+ " Speed value: " + value) ;
 		   
 		}
 				
