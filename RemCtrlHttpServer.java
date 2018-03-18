@@ -29,23 +29,6 @@ public class RemCtrlHttpServer
 	static HttpServer server;
 
 
-	public void All_Neutral()
-	{
-		System.out.println("BEGIN ALL NEUTRAL");
-
-		for (int i=0; i<=15; i++)
-		{
-			LED[i].Aus();
-			SERVO[i].GotoNeutral();
-		}
-
-		System.out.println("END ALL NEUTRAL");
-
-
-	}
-
-
-
 	public static void main(String[] args) throws Exception 
 	{
 		server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -83,10 +66,11 @@ public class RemCtrlHttpServer
 		servoBoardServo.setPWMFreq(60); // Set frequency to 60 Hz
 		for (int i=0; i<=15; i++)
 		{
-			if (i==3) SERVO[i] = new PCA9685Servo(servoBoardServo, i, 130,590, true);
+			if       (i==3) SERVO[i] = new PCA9685Servo(servoBoardServo, i, 130,590, true);
 			else  if (i==7) SERVO[i] = new PCA9685Servo(servoBoardServo, i, 214,585, true);
+			else  if (i==11) SERVO[i] = new PCA9685Servo(servoBoardServo, i, 300, 560, true);
 			else  if (i==15) SERVO[i] = new PCA9685Servo(servoBoardServo, i, 100,700, true);
-			else new PCA9685Servo(servoBoardServo, i, 0,4095, true);
+			else SERVO[i] =new PCA9685Servo(servoBoardServo, i,0,4095,true);
 		}
 
 
@@ -95,6 +79,23 @@ public class RemCtrlHttpServer
 	static class MyHandler implements HttpHandler 
 	{
 
+		private void All_Neutral()
+		{
+			
+			for (int i=0; i<=15; i++)
+			{
+				LED[i].Aus();
+			}
+
+			for (int i=0; i<=15; i++)
+			{
+				if (i==3 || i==7 || i==11 || i==15) SERVO[i].GotoNeutral();
+				else SERVO[i].GotoMin();
+			}
+			
+			
+			
+		}
 
 
 		public void handle(HttpExchange t) throws IOException 
@@ -116,20 +117,17 @@ public class RemCtrlHttpServer
 			//   pin_nr; command; parameters      
 			//
 			String query =  t.getRequestURI().getQuery();
+			
+			result = result + "<li>query: " + query + "\r\n";
 
-			if (query.equalsIgnoreCase("NEUTRAL"))
+			if (query.equalsIgnoreCase("STOP"))
 			{
-				System.out.println("STOPPING");
+				System.out.println("HTTTP Server STOPPING");
 
-				for (int i=0; i<=0; i++)
-				{
-					LED[i].Aus();
-					//SERVO[i].GotoNeutral();
-				}
-
-				System.out.println("STOPPED");
-
-				//server.stop(0);
+				//All_Neutral();
+				
+						
+				server.stop(0);
 
 				System.out.println("HTTP Server Stopped");
 				//return;
@@ -138,12 +136,12 @@ public class RemCtrlHttpServer
 			else
 			{	
 
-				result = result + "<li>query: " + query + "\r\n";
+				
 
-				String[] command = query.split(";");
+				String[] command = query.split(",");
 
 				int pin_number = Integer.parseInt(command[0]);
-				if (pin_number<0 || pin_number >15)
+				if ( (pin_number<0 || pin_number >15) && pin_number !=1000)
 				{
 					//error
 					return;
@@ -153,13 +151,26 @@ public class RemCtrlHttpServer
 				//
 				// Excecute Command
 				//
-				if (command[1].equalsIgnoreCase("LED_DIM"))
+				if (command[1].equalsIgnoreCase("NEUTRAL"))
+				{
+					if (pin_number == 1000) All_Neutral();
+					
+				}
+				else if (command[1].equalsIgnoreCase("LED_DIM"))
 				{
 					int value = Integer.parseInt(command[2]);
 					LED[pin_number].Dim(value);
-
 					result = result + "<li> ... Command: LED_DIM value: " + value + "\r\n";
-
+				}
+				else if (command[1].equalsIgnoreCase("LED_ON"))
+				{
+					LED[pin_number].An();
+					result = result + "<li> ... Command: LED_ON \r\n";
+				}
+				else if (command[1].equalsIgnoreCase("LED_OFF"))
+				{
+					LED[pin_number].Aus();
+					result = result + "<li> ... Command: LED_OFF \r\n";
 				}
 				else if (command[1].equalsIgnoreCase("SERVO_NEUTRAL"))
 				{
