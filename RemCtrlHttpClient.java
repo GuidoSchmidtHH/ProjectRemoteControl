@@ -1,0 +1,134 @@
+package RemCtrlClient;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+
+public class RemCtrlHttpClient 
+{
+
+	static public String server_url = "localhost";
+	static public int server_port = 8000; 
+	static public String server_dir = "test"; 
+	
+	
+	public  int SERVO_MAX(int pin)
+	{
+		
+		try 
+		{
+			HttpRequestGet(pin+",SERVO_MAX");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 100;
+	}
+	
+	public  int SERVO_MIN(int pin)
+	{
+		
+		try 
+		{
+			HttpRequestGet(pin+",SERVO_MIN");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -100;
+	}
+	
+	
+	public  int SERVO_NEUTRAL(int pin)
+	{
+		
+		try 
+		{
+			HttpRequestGet(pin+",SERVO_NEUTRAL");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	private static void HttpRequestGet(String command) throws IOException
+	{
+		
+		URL connection_url = null;
+		try 
+		{
+			connection_url = new URL("http://"+server_url +":"+server_port+"/"+server_dir+"?"+command);
+		} 
+		catch (MalformedURLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		HttpURLConnection connection = null;
+		try 
+		{
+			 connection = (HttpURLConnection) connection_url.openConnection();
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		if (connection != null)
+		{
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Accept", "text/html");
+			if (connection.getResponseCode() !=200)
+			{
+				//error
+				
+			}
+			else
+			{
+			
+				//ok
+			}
+			
+			connection.disconnect();
+			
+	
+			
+		}
+				
+	}
+	
+	
+	
+	
+	public static void main(String[] args) throws Exception 
+	{
+		
+		RemCtrlHttpClient HttpClient = new RemCtrlHttpClient();
+		
+		HttpClient.SERVO_MAX(3);
+		
+		TimeUnit.SECONDS.sleep(1);
+		
+		HttpClient.SERVO_MIN(3);
+		
+		TimeUnit.SECONDS.sleep(1);
+		
+		HttpClient.SERVO_NEUTRAL(3);
+		
+		
+	}
+	
+	
+	
+}
