@@ -1,79 +1,132 @@
 package RemCtrlClient;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.EventQueue;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ButtonGroup;
+import java.awt.GridLayout;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
-import com.pi4j.io.i2c.I2CFactory.UnsupportedBusNumberException;
-
-
-public class RemCtrlClientGUI extends JFrame  implements ActionListener
+public class RemCtrlClientGUI 
 {
 
 	RemCtrlHttpClient HttpClient = new RemCtrlHttpClient();
 	
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	JTextArea textArea;
-	JButton buttonHello;
+	private JFrame frame;
+	//private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JTextField textField;
 
-	public static void main(String[] args) throws UnsupportedBusNumberException 
-	{
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() 
-			{
-				createAndShowGUI();
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try 
+				{
+					RemCtrlClientGUI window = new RemCtrlClientGUI();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
-
-
-
-
 	}
 
-	private static void createAndShowGUI() 
+	/**
+	 * Create the application.
+	 */
+	public RemCtrlClientGUI() 
 	{
-	
-		RemCtrlClientGUI myFrame = new RemCtrlClientGUI();
-
-		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		myFrame.prepareUI();
-
-		myFrame.pack();
-		myFrame.setVisible(true);
+		initialize();
 	}
 
-	private void prepareUI()
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() 
 	{
-		textArea = new JTextArea();
-		textArea.setEditable(false);
-		JScrollPane panel = new JScrollPane(textArea);
-		panel.setPreferredSize(new Dimension(300, 100));
-
-		buttonHello = new JButton("SERVO");
-		buttonHello.addActionListener(this);
-
-		getContentPane().add(panel, BorderLayout.CENTER);
-		getContentPane().add(buttonHello, BorderLayout.PAGE_END);
-	}
-
-	public void actionPerformed(ActionEvent e) 
-	{
-		textArea.setText("An/ Aus");
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 		
-		HttpClient.SERVO_MAX(3);
-	
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		textArea.setBounds(27, 179, 324, 71);
+		frame.getContentPane().add(textArea);
+		
+		JSlider slider = new JSlider();
+		slider.setValue(0);
+		slider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) 
+			{
+				textArea.setText("Slider:" + slider.getValue());
+				HttpClient.SERVO_SPEED(3,slider.getValue());
+											
+			}
+		});
+		slider.setMinimum(-100);
+		slider.setBounds(82, 108, 200, 26);
+		frame.getContentPane().add(slider);
+		
+		
+		JButton btnLeft = new JButton("LEFT");
+		btnLeft.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				 textArea.setText("SERVO MIN");
+				 HttpClient.SERVO_MIN(3);
+				 slider.setValue(-100);
+				
+			}
+		});
+		btnLeft.setBounds(27, 61, 89, 23);
+		frame.getContentPane().add(btnLeft);
+		
+		
+		
+		textField = new JTextField();
+		textField.setBounds(30, 30, 86, 20);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+		
+		JButton btnCenter = new JButton("Neutral");
+		btnCenter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				textArea.setText("SERVO NEUTRAL");
+				HttpClient.SERVO_NEUTRAL(3);
+				 slider.setValue(0);
+			}
+		});
+		btnCenter.setBounds(136, 61, 89, 23);
+		frame.getContentPane().add(btnCenter);
+		
+		JButton btnRight = new JButton("RIGHT");
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				textArea.setText("SERVO MAX");
+				HttpClient.SERVO_MAX(3);
+				 slider.setValue(100);
+				
+			}
+		});
+		btnRight.setBounds(262, 61, 89, 23);
+		frame.getContentPane().add(btnRight);
+		
+		
 	}
-
 }

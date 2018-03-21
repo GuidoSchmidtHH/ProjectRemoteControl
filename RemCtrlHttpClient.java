@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 public class RemCtrlHttpClient 
 {
 
-	static public String server_url = "localhost";
+	//static public String server_url = "localhost";
+	static public String server_url = "192.168.178.65";
 	static public int server_port = 8000; 
 	static public String server_dir = "test"; 
 	
@@ -60,6 +61,23 @@ public class RemCtrlHttpClient
 		return 0;
 	}
 	
+	public  int SERVO_SPEED(int pin, int value)
+	{
+		
+		try 
+		{
+			HttpRequestGet(pin+",SERVO_SPEED,"+value);
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
+	
 	private static void HttpRequestGet(String command) throws IOException
 	{
 		
@@ -109,7 +127,9 @@ public class RemCtrlHttpClient
 	}
 	
 	
-	
+	//
+	// test
+	//
 	
 	public static void main(String[] args) throws Exception 
 	{
