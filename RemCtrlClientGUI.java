@@ -23,9 +23,10 @@ public class RemCtrlClientGUI
 
 	RemCtrlHttpClient HttpClient = new RemCtrlHttpClient();
 	
+	private int pin = 3;
 	private JFrame frame;
 	//private final ButtonGroup buttonGroup = new ButtonGroup();
-	private JTextField textField;
+	private JTextField textFieldServo;
 
 	/**
 	 * Launch the application.
@@ -57,6 +58,9 @@ public class RemCtrlClientGUI
 	 */
 	private void initialize() 
 	{
+		
+		
+		pin = 3;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -67,13 +71,21 @@ public class RemCtrlClientGUI
 		textArea.setBounds(27, 179, 324, 71);
 		frame.getContentPane().add(textArea);
 		
+		textFieldServo = new JTextField();
+		textFieldServo.setText("3");
+		textFieldServo.setBounds(30, 30, 86, 20);
+		frame.getContentPane().add(textFieldServo);
+		textFieldServo.setColumns(10);
+		
+		
 		JSlider slider = new JSlider();
 		slider.setValue(0);
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) 
 			{
 				textArea.setText("Slider:" + slider.getValue());
-				HttpClient.SERVO_SPEED(3,slider.getValue());
+			//	int pin = Integer.parseInt(textFieldServo.getText());
+				HttpClient.SERVO_SPEED(pin,slider.getValue());
 											
 			}
 		});
@@ -87,7 +99,7 @@ public class RemCtrlClientGUI
 			public void actionPerformed(ActionEvent e) 
 			{
 				 textArea.setText("SERVO MIN");
-				 HttpClient.SERVO_MIN(3);
+				 HttpClient.SERVO_MIN(pin);
 				 slider.setValue(-100);
 				
 			}
@@ -97,17 +109,14 @@ public class RemCtrlClientGUI
 		
 		
 		
-		textField = new JTextField();
-		textField.setBounds(30, 30, 86, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		
 		
 		JButton btnCenter = new JButton("Neutral");
 		btnCenter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				textArea.setText("SERVO NEUTRAL");
-				HttpClient.SERVO_NEUTRAL(3);
+				HttpClient.SERVO_NEUTRAL(pin);
 				 slider.setValue(0);
 			}
 		});
@@ -119,13 +128,26 @@ public class RemCtrlClientGUI
 			public void actionPerformed(ActionEvent e) 
 			{
 				textArea.setText("SERVO MAX");
-				HttpClient.SERVO_MAX(3);
+				HttpClient.SERVO_MAX(pin);
 				 slider.setValue(100);
 				
 			}
 		});
 		btnRight.setBounds(262, 61, 89, 23);
 		frame.getContentPane().add(btnRight);
+		
+		JButton btnSETButton = new JButton("SET");
+		btnSETButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				pin = Integer.parseInt(textFieldServo.getText());
+				int value = HttpClient.GET_SERVO_SPEED(pin);
+				slider.setValue(value);
+				
+			}
+		});
+		btnSETButton.setBounds(136, 29, 89, 23);
+		frame.getContentPane().add(btnSETButton);
 		
 		
 	}

@@ -1,6 +1,8 @@
 package RemCtrlClient;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,12 +78,34 @@ public class RemCtrlHttpClient
 		return 0;
 	}
 	
+	public  int GET_SERVO_SPEED(int pin)
+	{
+		String result = "";
+		
+		int value = 0;
+		
+		try 
+		{
+			result = HttpRequestGet(pin+",GET_SERVO_SPEED");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = "error";
+		}
+		
+		value = Integer.parseInt(result);
+		
+		return value;
+	}
 	
-	
-	private static void HttpRequestGet(String command) throws IOException
+	private static String HttpRequestGet(String command) throws IOException
 	{
 		
 		URL connection_url = null;
+		String content ="";
+		
 		try 
 		{
 			connection_url = new URL("http://"+server_url +":"+server_port+"/"+server_dir+"?"+command);
@@ -116,14 +140,34 @@ public class RemCtrlHttpClient
 			{
 			
 				//ok
+				
+				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String inputLine = "";
+				//StringBuffer content = new StringBuffer();
+				
+				//int i=0;
+				//while 
+			    if (((inputLine = in.readLine()) != null)) //&& i==0) 
+				{
+			    	content = inputLine;
+					//content.append(inputLine);
+					//i++;
+				}
+			    else
+			    {
+			    	content ="error";
+			    }
+				in.close();
+				
 			}
 			
+			
 			connection.disconnect();
-			
-	
-			
+				
 		}
 				
+		return content;
+		
 	}
 	
 	
