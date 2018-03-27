@@ -101,7 +101,7 @@ public class RemCtrlHttpServer
 		public void handle(HttpExchange t) throws IOException 
 		{
 
-
+            boolean html = true;
 			String result = "<h1>RemoteControl</h1> \r\n";
 			result = result + "<ul> \r\n";
 
@@ -147,7 +147,8 @@ public class RemCtrlHttpServer
 					return;
 				}  	
 				result = result + "<li> ... PIN: " + pin_number+ "\r\n";
-
+                html = true;
+				
 				//
 				// Excecute Command
 				//
@@ -187,8 +188,26 @@ public class RemCtrlHttpServer
 					SERVO[pin_number].GotoMax();
 					result = result + "<li> ... Command: SERVO_MAX \r\n";
 				}
+				else if (command[1].equalsIgnoreCase("SERVO_SPEED"))
+				{
+					
+					int value = Integer.parseInt(command[2]);
+					SERVO[pin_number].Speed(value);
+					result = result + "<li> ... Command: SERVO_SPEED " + value + " \r\n";
+				}
+				else if (command[1].equalsIgnoreCase("GET_SERVO_SPEED"))
+				{
+					
+					//int value = Integer.parseInt(command[2]);
+					int value = SERVO[pin_number].GetServoValueSpeed();
+					result = ""+value;
+					html = false;
+					
+					//result = result + "<li> ... Command: SERVO_SPEED " + value + " \r\n";
+				}
 				
-				result = result + "</ul>";
+				
+				if (html) result = result + "</ul>";
 			}
 
 
