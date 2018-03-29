@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 //
-// JAVA Client GUI
+// Http Client for GUI
 // RemCtrlHttpClient
 // 
 //
