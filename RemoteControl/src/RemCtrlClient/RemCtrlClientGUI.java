@@ -17,6 +17,11 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 //
 //
@@ -71,20 +76,22 @@ public class RemCtrlClientGUI
 		
 		pin = 3;
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 479, 511);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
 		
 		//JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(27, 179, 324, 71);
-		frame.getContentPane().add(textArea);
 		
 		textFieldServo = new JTextField();
 		textFieldServo.setText("3");
-		textFieldServo.setBounds(30, 30, 86, 20);
-		frame.getContentPane().add(textFieldServo);
 		textFieldServo.setColumns(10);
+		
+		
+        JLabel lblServoControl = new JLabel("SERVO CONTROL");
+		
+		JLabel lblLedControl = new JLabel("LED CONTROL");
+		
+		
 		
 		//
 		// Slider
@@ -92,6 +99,7 @@ public class RemCtrlClientGUI
 		//JSlider slider = new JSlider();
 		int value = HttpClient.GET_SERVO_SPEED(pin);
 		slider.setValue(value);
+		
 		slider.addChangeListener(new ChangeListener() 
 		{
 			public void stateChanged(ChangeEvent e) 
@@ -103,8 +111,6 @@ public class RemCtrlClientGUI
 			}
 		});
 		slider.setMinimum(-100);
-		slider.setBounds(82, 108, 200, 26);
-		frame.getContentPane().add(slider);
 		
 		//
 		// Button Left
@@ -119,8 +125,6 @@ public class RemCtrlClientGUI
 				
 			}
 		});
-		btnLeft.setBounds(27, 61, 89, 23);
-		frame.getContentPane().add(btnLeft);
 		
 		//
 		// Button Neutral
@@ -134,8 +138,6 @@ public class RemCtrlClientGUI
 				 slider.setValue(0);
 			}
 		});
-		btnCenter.setBounds(136, 61, 89, 23);
-		frame.getContentPane().add(btnCenter);
 		
 		//
 		// Button Right
@@ -150,8 +152,6 @@ public class RemCtrlClientGUI
 				
 			}
 		});
-		btnRight.setBounds(262, 61, 89, 23);
-		frame.getContentPane().add(btnRight);
 		
 		//
 		// Button SET
@@ -166,8 +166,79 @@ public class RemCtrlClientGUI
 				
 			}
 		});
-		btnSETButton.setBounds(136, 29, 89, 23);
-		frame.getContentPane().add(btnSETButton);
+		
+		
+		//
+		// Button ALL NEUTRAL
+		//
+		
+		
+		JButton btnAllNeutral = new JButton("ALL NEUTRAL");
+		btnAllNeutral.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				HttpClient.ALL_NEUTRAL();
+				
+				// update Slider
+				pin = Integer.parseInt(textFieldServo.getText());
+				int value = HttpClient.GET_SERVO_SPEED(pin);
+				slider.setValue(value);
+				
+			}
+		});
+		
+		
+		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(27)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnAllNeutral)
+						.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblLedControl, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblServoControl, GroupLayout.PREFERRED_SIZE, 106, GroupLayout.PREFERRED_SIZE)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addComponent(btnLeft, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+									.addComponent(textFieldServo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(20)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+									.addComponent(btnSETButton, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+									.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(btnCenter, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addComponent(btnRight, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))))
+							.addComponent(slider, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+					.addContainerGap(112, Short.MAX_VALUE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addGap(40)
+					.addComponent(lblServoControl)
+					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textFieldServo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnSETButton))
+					.addGap(9)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnLeft)
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnCenter)
+							.addComponent(btnRight)))
+					.addGap(24)
+					.addComponent(slider, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblLedControl)
+					.addGap(137)
+					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+					.addGap(21)
+					.addComponent(btnAllNeutral)
+					.addContainerGap())
+		);
+		frame.getContentPane().setLayout(groupLayout); 
 		
 		
 	}

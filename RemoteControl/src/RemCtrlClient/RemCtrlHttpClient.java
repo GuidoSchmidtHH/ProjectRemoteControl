@@ -22,6 +22,22 @@ public class RemCtrlHttpClient
 	static public String server_dir = "test"; 
 	
 	
+	public  int ALL_NEUTRAL()
+	{
+		
+		try 
+		{
+			HttpRequestGet("1000,NEUTRAL");
+		} 
+		catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	
 	public  int SERVO_MAX(int pin)
 	{
 		
