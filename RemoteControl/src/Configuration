@@ -15,8 +15,9 @@ Remote Control @ Raspberry Pi
 --> https://www.elektronik-kompendium.de/sites/raspberry-pi/2007011.htm
 
 
-Passwort ändern
----------------
+----------------
+Passwort Ã¤ndern
+----------------
 
 --------------------
 Eclipse Installieren
@@ -123,7 +124,7 @@ sudo passwd tomcat
 sudo usermod -a -G i2c tomcat  // Tomcat kann auf Ressourcen zugreifen
 sudo usermod -a -G gpio tomcat
 
-in --> etc/tomcat8/tomcat-users.xml  einfügen
+in --> etc/tomcat8/tomcat-users.xml  einfÃ¼gen
    <role rolename="manager-gui"/>
    <user username="tomcat" password="*******" roles="manager-gui"/>
 
@@ -161,7 +162,7 @@ sudo service mysql restart
 -----------------------
 PHPMyAdmin installieren
 -----------------------
-//mysql admin opberfläche
+//mysql admin opberflÃ¤che
 
 --> https://pimylifeup.com/raspberry-pi-mysql-phpmyadmin/
 --> http://lastbug.net/blog/2016/01/23/install-apache-php-and-mysql-and-phpmyadmin-on-raspberry-pi/
@@ -180,7 +181,7 @@ nano /etc/apache2/apache2.conf
 
 /etc/init.d/apache2 restart
 
-// Managementoberfläche
+// ManagementoberflÃ¤che
 --> http://localhost/phpmyadmin/ 
 // *user: root
 
@@ -257,10 +258,13 @@ Github and Eclipse
 GIT Commands:
 -------------
 
-checkin: Commit and Push to Upstream
+! Team --> Pull to pull in changes from your remote Git repository (=fetch and merge)
 
-refresh: 
+Team --> Fetch to fetch the current state from the remote repository (to local git but not to workspace)
 
+Team --> Push to push changes to your remote Git repository
+
+! Team --> Commit and Push to push changes to your remote Git repository
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Links
