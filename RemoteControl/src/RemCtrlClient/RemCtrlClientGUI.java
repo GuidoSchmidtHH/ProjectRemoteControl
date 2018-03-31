@@ -18,6 +18,10 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
+//
+//
+// RemCtrlClientGUI
+//
 public class RemCtrlClientGUI 
 {
 
@@ -33,8 +37,10 @@ public class RemCtrlClientGUI
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
 				try 
 				{
 					RemCtrlClientGUI window = new RemCtrlClientGUI();
@@ -80,10 +86,14 @@ public class RemCtrlClientGUI
 		frame.getContentPane().add(textFieldServo);
 		textFieldServo.setColumns(10);
 		
-		
+		//
+		// Slider
+		//
 		//JSlider slider = new JSlider();
-		slider.setValue(0);
-		slider.addChangeListener(new ChangeListener() {
+		int value = HttpClient.GET_SERVO_SPEED(pin);
+		slider.setValue(value);
+		slider.addChangeListener(new ChangeListener() 
+		{
 			public void stateChanged(ChangeEvent e) 
 			{
 				textArea.setText("Slider:" + slider.getValue());
@@ -96,7 +106,9 @@ public class RemCtrlClientGUI
 		slider.setBounds(82, 108, 200, 26);
 		frame.getContentPane().add(slider);
 		
-		
+		//
+		// Button Left
+		//
 		JButton btnLeft = new JButton("LEFT");
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
@@ -110,10 +122,9 @@ public class RemCtrlClientGUI
 		btnLeft.setBounds(27, 61, 89, 23);
 		frame.getContentPane().add(btnLeft);
 		
-		
-		
-		
-		
+		//
+		// Button Neutral
+		//
 		JButton btnCenter = new JButton("Neutral");
 		btnCenter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
@@ -126,6 +137,9 @@ public class RemCtrlClientGUI
 		btnCenter.setBounds(136, 61, 89, 23);
 		frame.getContentPane().add(btnCenter);
 		
+		//
+		// Button Right
+		//
 		JButton btnRight = new JButton("RIGHT");
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
@@ -139,6 +153,9 @@ public class RemCtrlClientGUI
 		btnRight.setBounds(262, 61, 89, 23);
 		frame.getContentPane().add(btnRight);
 		
+		//
+		// Button SET
+		//
 		JButton btnSETButton = new JButton("SET");
 		btnSETButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
