@@ -4,16 +4,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ButtonGroup;
-import java.awt.GridLayout;
+//import javax.swing.JPanel;
+//import javax.swing.JScrollPane;
+//import javax.swing.ButtonGroup;
+//import java.awt.GridLayout;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
+//import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
@@ -60,6 +60,8 @@ public class RemCtrlClientGUI
 	private void initialize() 
 	{
 		
+		final JTextArea textArea = new JTextArea();
+		final JSlider slider = new JSlider();
 		
 		pin = 3;
 		frame = new JFrame();
@@ -67,7 +69,7 @@ public class RemCtrlClientGUI
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JTextArea textArea = new JTextArea();
+		//JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setBounds(27, 179, 324, 71);
 		frame.getContentPane().add(textArea);
@@ -79,7 +81,7 @@ public class RemCtrlClientGUI
 		textFieldServo.setColumns(10);
 		
 		
-		JSlider slider = new JSlider();
+		//JSlider slider = new JSlider();
 		slider.setValue(0);
 		slider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) 
