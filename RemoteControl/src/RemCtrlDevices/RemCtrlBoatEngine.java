@@ -78,7 +78,8 @@ public class RemCtrlBoatEngine
 		PCA9685Board servoBoardTest; 
 		servoBoardTest = new PCA9685Board(0x40);
 		servoBoardTest.setPWMFreq(60); // Set frequency to 60 Hz
-	
+
+//
 //	    Servo FS90 = 130, 590
 //	    Fahrtenregler = 300, 560 (volksregler 1)
 //	    Servo MC410 = 214,585
