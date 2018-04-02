@@ -33,9 +33,8 @@ public class RemCtrlClientGUI
 	
 	RemCtrlHttpClient HttpClient = new RemCtrlHttpClient();
 	
-	private int pin = 3;
+	private int pin = -1;
 	private JFrame frame;
-	//private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JTextField textFieldServo;
 
 	/**
@@ -71,15 +70,18 @@ public class RemCtrlClientGUI
 	private void initialize() 
 	{
 		
+		
+		
 		final JTextArea textArea = new JTextArea();
 		final JSlider slider = new JSlider();
+		slider.setMinimum(-100);
+		slider.setMaximum(100);
+		
 		
 		pin = 3;
 		frame = new JFrame();
 		frame.setBounds(100, 100, 479, 511);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		
 		textFieldServo = new JTextField();
@@ -88,17 +90,12 @@ public class RemCtrlClientGUI
 		
 		
         JLabel lblServoControl = new JLabel("SERVO CONTROL");
-		
 		JLabel lblLedControl = new JLabel("LED CONTROL");
-		
-		
+			
 		
 		//
 		// Slider
 		//
-		//JSlider slider = new JSlider();
-		int value = HttpClient.GET_SERVO_SPEED(pin);
-		slider.setValue(value);
 		
 		slider.addChangeListener(new ChangeListener() 
 		{
@@ -106,11 +103,15 @@ public class RemCtrlClientGUI
 			{
 				textArea.setText("Slider:" + slider.getValue());
 			//	int pin = Integer.parseInt(textFieldServo.getText());
-				HttpClient.SERVO_SPEED(pin,slider.getValue());
+				if (pin >= 0 ) HttpClient.SERVO_SPEED(pin,slider.getValue());
 											
 			}
 		});
-		slider.setMinimum(-100);
+		
+		
+		int value = HttpClient.GET_SERVO_SPEED(pin);
+		slider.setValue(value);
+		
 		
 		//
 		// Button Left
