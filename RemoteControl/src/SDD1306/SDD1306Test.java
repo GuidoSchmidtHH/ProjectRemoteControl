@@ -17,7 +17,8 @@ public class SDD1306Test
   /**
    * @param args
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) 
+  {
     // create gpio controller
     final GpioController gpio = GpioFactory.getInstance();
     I2CBus i2c;
@@ -28,8 +29,9 @@ public class SDD1306Test
       display = new SDD1306Display(SDD1306Constants.LCD_WIDTH_128, SDD1306Constants.LCD_HEIGHT_64,
         gpio, i2c, 0x3c);
       display.begin();
-      display.displayString("Hello Lars");
-    } catch (UnsupportedBusNumberException | IOException e) {
+      display.displayString("Fast Crew \n Supplier");
+    } catch (UnsupportedBusNumberException | IOException e) 
+    {
       e.printStackTrace();
     }
   }

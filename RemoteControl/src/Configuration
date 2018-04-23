@@ -62,8 +62,15 @@ curl -s get.pi4j.com | sudo bash   (version 1.1 is installed)
 pi4j --version
 pi4j --update  
 
-
+Install version 1.2, download from http://pi4j.com/download.html
   
+--------------------------------------------
+            THE Pi4J PROJECT
+--------------------------------------------
+   VERSION   : 1.2-SNAPSHOT
+   TIMESTAMP : 2018-04-23 04:22:34
+--------------------------------------------
+ 
 
 --------------
 PI4J @ Eclipse
