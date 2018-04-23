@@ -16,9 +16,16 @@ Remote Control @ Raspberry Pi
 
 
 ----------------
-Passwort Ã¤ndern
+Passwort Ã¤ndern etc
 ----------------
 
+// kernel version
+uname -a 
+
+... Linux raspberrypi 4.9.59-v7+ #1047 SMP Sun Oct 29 12:19:23 GMT 2017 armv7l GNU/Linux
+
+// hardware info
+cat /proc/cpuinfo
 
 
 
@@ -50,7 +57,13 @@ PI4J Installation
 // Install Java Classes to support I2C on Raspberry Pi.
 --> http://pi4j.com/install.html
 
-curl -s get.pi4j.com | sudo bash
+curl -s get.pi4j.com | sudo bash   (version 1.1 is installed)
+
+pi4j --version
+pi4j --update  
+
+
+  
 
 --------------
 PI4J @ Eclipse
@@ -73,12 +86,31 @@ I2C/SPI/ PCA9685 Board aktivieren
 sudo raspi config
    - Interfacing options/SPI und I2C aktivieren
 
+sudo apt-get install -y i2c-tools
+
+
+--> https://learn.adafruit.com/adafruit-16-channel-servo-driver-with-raspberry-pi
+
+configure I2C:
+--------------
+
+--> https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
+
 -------------------
 I2C Test
 -------------------
 
 sudo i2cdetect -y 1
 
+    0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
+00:          -- -- -- -- -- -- -- -- -- -- -- -- -- 
+10: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+20: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+30: -- -- -- -- -- -- -- -- -- -- -- -- 3c -- -- -- OLED
+40: 40 41 -- -- -- -- -- -- -- -- -- -- -- -- -- -- PCA9685
+50: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+60: -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+70: -- -- -- -- -- -- -- --                         
 
 
 
@@ -86,19 +118,51 @@ sudo i2cdetect -y 1
 OLED I2C SDD1306 Display
 ------------------------
 
-https://webnist.de/i2c-oled-display-mit-python-am-raspberrypi/
-https://learn.adafruit.com/ssd1306-oled-displays-with-raspberry-pi-and-beaglebone-black/overview  
-https://raspilab.blog/2015/03/31/meine-smartwatch-mit-i2c-ein-oled-display-ansteuern/
+//https://webnist.de/i2c-oled-display-mit-python-am-raspberrypi/
+//https://learn.adafruit.com/ssd1306-oled-displays-with-raspberry-pi-and-beaglebone-black/overview  
+//https://raspilab.blog/2015/03/31/meine-smartwatch-mit-i2c-ein-oled-display-ansteuern/
+//
+//c-Lib:
+//-->https://github.com/hallard/ArduiPi_OLED
+//
+//java port: (2015)
+//--> https://github.com/ondryaso/pi-ssd1306-java
+//
+//--> http://raspberrypi.lediouris.net/SSD1306/readme.html
 
 
-https://www.amazon.de/gp/product/B01L9GC470/ref=as_li_ss_tl?ie=UTF8&psc=1&smid=A1X7QLRQH87QA3&linkCode=sl1&tag=webnist-21&linkId=473f4e7e99a83962938196d6c311c41b
+java hello world
+--> https://robotjava.wordpress.com/2016/10/10/oled-ssd1306-display/
 
 
 
+
+
+buy:
+
+--> https://www.amazon.de/gp/product/B01L9GC470/ref=as_li_ss_tl?ie=UTF8&psc=1&smid=A1X7QLRQH87QA3&linkCode=sl1&tag=webnist-21&linkId=473f4e7e99a83962938196d6c311c41b
+
+---------------
+Raspberry and C
+---------------
+
+--> http://www.airspayce.com/mikem/bcm2835/
+
+----------------
+Raspberry & Java
+----------------
+
+tons of samples:
+
+--> https://github.com/OlivierLD/raspberry-pi4j-samples/
 
 ----------------
 Raspberry Pi Cam
 ---------------- 
+
+--> https://www.datenreise.de/raspberry-pi-kamera-inbetriebnahme/
+
+
 
 
 -------------------
