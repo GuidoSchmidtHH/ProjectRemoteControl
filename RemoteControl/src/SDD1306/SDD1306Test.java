@@ -29,7 +29,14 @@ public class SDD1306Test
       display = new SDD1306Display(SDD1306Constants.LCD_WIDTH_128, SDD1306Constants.LCD_HEIGHT_64,
         gpio, i2c, 0x3c);
       display.begin();
-      display.displayString("Fast Crew \n Supplier");
+      
+      display.displayString(0, 0, "Fast Crew Supplier");
+      display.displayString(0, 30, "Fast Crew Supplier");
+      display.displayCircle(50,50,10,10);
+      
+      display.setPixel(50, 50, true);    
+      display.display();
+      //display.displayString("second");
     } catch (UnsupportedBusNumberException | IOException e) 
     {
       e.printStackTrace();

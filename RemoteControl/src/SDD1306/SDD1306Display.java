@@ -31,9 +31,6 @@ public class SDD1306Display
 
     /**
      * Display object using I2C communication with a reset pin
-     * <br/>
-     * As I haven't got an I2C display and I don't understand I2C much, I just tried to copy
-     * the Adafruit's library and I am using a hack to use WiringPi function similar to one in the original lib directly.
      *
      * @param width   Display width
      * @param height  Display height
@@ -417,14 +414,41 @@ public class SDD1306Display
      * @param data
      * @param line
      */
-    public void displayString(String... data) {
-    	clearImage();
-    	for (int i = 0; i < data.length; i++) {
-        	graphics.drawString(data[i], 0, SDD1306Constants.STRING_HEIGHT * (i + 1));
+    public void displayString(String... data) 
+    {
+    	//clearImage();
+    	for (int i = 0; i < data.length; i++) 
+    	{
+        	//graphics.drawString(data[i], 0, SDD1306Constants.STRING_HEIGHT * (i + 1));   //STRING_HEIGHT = 16
+    		graphics.drawString(data[i], 0, SDD1306Constants.STRING_HEIGHT ); 
 		}
 		displayImage();
     }
     
+    
+    public void displayCircle(int position_x, int position_y, int width, int height) 
+    {
+    	//clearImage();
+    	
+    	graphics.drawOval(position_x,position_y, width, height);
+    	
+		displayImage();
+    }
+    
+    
+    
+    
+    
+    public void displayString(int position_x, int position_y, String... data) 
+    {
+    	//clearImage();
+    	for (int i = 0; i < data.length; i++) {
+        	graphics.drawString(data[i], position_x, position_y + SDD1306Constants.STRING_HEIGHT );   //STRING_HEIGHT = 16
+		}
+		displayImage();
+    }
+    
+       
 	public void horizontalLine(int position) {
 		for (int i = 0; i < width; i++){
 			setPixel(i, position, true);
