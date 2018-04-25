@@ -125,25 +125,8 @@ sudo i2cdetect -y 1
 OLED I2C SDD1306 Display
 ------------------------
 
-//https://webnist.de/i2c-oled-display-mit-python-am-raspberrypi/
-//https://learn.adafruit.com/ssd1306-oled-displays-with-raspberry-pi-and-beaglebone-black/overview  
-//https://raspilab.blog/2015/03/31/meine-smartwatch-mit-i2c-ein-oled-display-ansteuern/
-//
-//c-Lib:
-//-->https://github.com/hallard/ArduiPi_OLED
-//
-//java port: (2015)
-//--> https://github.com/ondryaso/pi-ssd1306-java
-//
-//--> http://raspberrypi.lediouris.net/SSD1306/readme.html
-
-
 java hello world
 --> https://robotjava.wordpress.com/2016/10/10/oled-ssd1306-display/
-
-
-
-
 
 buy:
 
@@ -166,10 +149,14 @@ tons of samples:
 ----------------
 Raspberry Pi Cam
 ---------------- 
-
 --> https://www.datenreise.de/raspberry-pi-kamera-inbetriebnahme/
 
+// Cam Test
+vcgencmd get_camera
+-->supported=1 detected=1
 
+// Bild aufnehmen
+raspistill -o test.jpg
 
 
 -------------------
@@ -369,6 +356,17 @@ Team --> Push to push changes to your remote Git repository
 ! Team --> Commit and Push to push changes to your remote Git repository
 
 --> https://homepages.thm.de/~hg11260/mat/git.pdf
+
+
+
+-------------------
+Android Development
+-------------------
+
+// activate tablet for development
+- tab 7x on build number
+- avtivate in options
+
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 Links
