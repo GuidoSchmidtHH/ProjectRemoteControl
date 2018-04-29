@@ -14,7 +14,7 @@ import java.awt.image.Raster;
 import java.io.IOException;
 
 /**
- * @author Tuan Vu
+ * 
  *
  */
 public class SDD1306Display 

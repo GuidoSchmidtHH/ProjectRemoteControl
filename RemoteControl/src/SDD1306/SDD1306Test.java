@@ -1,6 +1,7 @@
 package SDD1306;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -16,8 +17,9 @@ public class SDD1306Test
 {
   /**
    * @param args
+ * @throws InterruptedException 
    */
-  public static void main(String[] args) 
+  public static void main(String[] args) throws InterruptedException 
   {
     // create gpio controller
     final GpioController gpio = GpioFactory.getInstance();
@@ -36,6 +38,16 @@ public class SDD1306Test
       
       display.setPixel(50, 50, true);    
       display.display();
+      
+      
+      // clear display again
+      //
+      TimeUnit.SECONDS.sleep(10);
+      display.clearImage();
+      display.displayString(0, 0, "");
+      display.display();
+      
+      
       //display.displayString("second");
     } catch (UnsupportedBusNumberException | IOException e) 
     {
