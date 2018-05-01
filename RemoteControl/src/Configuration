@@ -7,6 +7,9 @@ Remote Control @ Raspberry Pi
 // *user: pi
 // *passwd: raspberry (standard to be changed)
 
+//192.168.178.65
+//localhost
+
 
 // Packages to Install
 --> https://packages.debian.org/jessie/
@@ -150,6 +153,7 @@ tons of samples:
 Raspberry Pi Cam
 ---------------- 
 --> https://www.datenreise.de/raspberry-pi-kamera-inbetriebnahme/
+--> https://www.raspberrypi.org/documentation/raspbian/applications/camera.md
 
 // Cam Test
 vcgencmd get_camera
@@ -157,6 +161,20 @@ vcgencmd get_camera
 
 // Bild aufnehmen
 raspistill -o test.jpg
+
+// video
+raspivid -o test.h264 -t 2500 
+
+// display video
+omxplayer -o hdmi *.h264 
+
+
+// stream using netcat
+// -------------------
+--> http://frozen.ca/streaming-raw-h-264-from-a-raspberry-pi/
+raspivid -n -ih -t 0 -rot 0 -w 1280 -h 720 -fps 15 -b 1000000 -o - | nc -lkv4 5001   //192.168.178.65
+
+use android/apple RPI camera viewer
 
 
 -------------------
@@ -365,7 +383,9 @@ Android Development
 
 // activate tablet for development
 - tab 7x on build number
-- avtivate in options
+- activate in options
+
+
 
 
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

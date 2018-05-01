@@ -6,7 +6,7 @@ public class RaspiStillWrapper
 	  // Define the path to the raspistill executable.
 	   private final String _raspistillPath = "/opt/vc/bin/raspistill";
 	   // Define the amount of time that the camera will use to take a photo.
-	   private final int _picTimeout = 1;
+	   private final int _picTimeout = 1000;
 	   // Define the image quality.
 	   private final int _picQuality = 100;
 
@@ -115,7 +115,7 @@ public class RaspiStillWrapper
 	    	  
 	    	System.out.println("RaspiStill Picture #" + i);  
 	        // Capture the image.
-	        camera.TakePicture("image_java" + i + ".jpg",800,600);
+	        camera.TakePicture("image_javanew" + i + ".jpg",800,600);
 	        // Pause after each photo.
 	        Thread.sleep(_delayInterval);
 	      }
@@ -131,3 +131,25 @@ public class RaspiStillWrapper
 	}
 
 }
+
+/*
+ * Capturing images from the raspberry pi cam is done by the command line tool raspistill. It’s possible to perform the command by invoking java’s Runtime.exec(..) method:
+Java
+Runtime rt = Runtime.getRuntime();
+Process p =
+    rt.exec("raspistill -n --nopreview -t 250 -w 400 -h 300 -e jpg -o -");
+p.waitFor(5000, TimeUnit.MILLISECONDS);
+InputStream is = p.getInputStream();
+byte[] currentImage = IOUtils.toByteArray(p.getInputStream());
+ 
+The output is directly passed to the java call. I noticed that the command performs significant faster if the image is read directly from the stream and not from a file written to the disk.
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+
+
