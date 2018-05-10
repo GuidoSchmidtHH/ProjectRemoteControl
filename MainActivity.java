@@ -1,5 +1,6 @@
 package de.guidoschmidtonline.remctrltestapp;
 
+import android.hardware.Sensor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,25 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import android.hardware.SensorManager;
+import android.hardware.SensorEvent;
+import android.content.Context;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
+
+import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.List;
+
 import java.io.BufferedReader;
 
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
@@ -27,9 +47,30 @@ public class MainActivity extends AppCompatActivity
 {
 
     private TextView mTextMessage;
+    //private SensorManager mSensorManager;
+    //private Sensor mSensor;
+//    private TriggerEventListener mTriggerEventListener;
+    private float lastX = 0;
 
+
+
+    private static final String TAG =  MainActivity.class.getSimpleName();
+    private SensorManager manager;
+    private Sensor sensor;
+    private Sensor orientation_sensor;
+    private SensorEventListener listener;
+    //private SensorManager.DynamicSensorCallback callback;
+    //private HashMap<String, Boolean> hm;
+
+
+
+
+    //
+    // main Navogation
+    //
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            = new BottomNavigationView.OnNavigationItemSelectedListener()
+    {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -47,18 +88,149 @@ public class MainActivity extends AppCompatActivity
             }
             return false;
         }
-    };
+    }; // Bottom Navigation
 
+
+    //
+    // Trigger Event Listener
+    //
+
+    /*
+    private TriggerEventListener mTriggerEventListener = new TriggerEventListener()
+    {
+    @Override
+    public void onTrigger(TriggerEvent event)
+    {
+        // Do work
+        if (event.sensor.getType() == Sensor.TYPE_ROTATION_VECTOR)
+        {
+            mTextMessage.setText("Orientation xxxxxxxxxxxxx");
+
+            float x = event.values[SensorManager.AXIS_X];
+
+            if (Math.abs(x - lastX) > 1.0)
+            {
+                //if (mOnOrientationListener != null)
+                //
+                // {
+                //    mOnOrientationListener.onOrientationChanged(x);
+                // }
+
+                //String urlstr = "http://192.168.178.65:8000/test?3,SERVO_MIN";
+                mTextMessage.setText("Orientation xxxxxxxxxxxxx" + x);
+                //new FetchWeatherData().execute();
+
+            }
+
+            lastX = x;
+
+        }
+
+    }
+};// Trigger event listener */
+
+
+
+
+    //
+    // On Create
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+
+        //mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        //mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        //mSensorManager.requestTriggerSensor(mTriggerEventListener, mSensor);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Hash map
+        //hm = new HashMap<>();
+
+        // Text Feld
+        //
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
+        // listener
+
+        listener = new SensorEventListener()
+        {
+            @Override
+            public void onSensorChanged(SensorEvent event)
+            {
+
+
+                if (Math.abs(event.values[0] - lastX) > 0.5)
+                {
+
+                    lastX = event.values[0];
+
+                    mTextMessage.setText("changed trigger: " +  event.sensor.getName() + " : " + event.values[0] +
+                            " : " + event.values[1] +
+                            " : " + event.values[2]
+                    );
+
+                    if (event.values[0] > 7) {
+                        String urlstr = "http://192.168.178.65:8000/test?3,SERVO_MIN";
+                        mTextMessage.setText("Go Left:" + urlstr);
+                        new RemCtrlHTTPRequest().execute(urlstr);
+
+                    } else if (event.values[0] < -7) {
+                        String urlstr = "http://192.168.178.65:8000/test?3,SERVO_MAX";
+                        mTextMessage.setText("Go Left:" + urlstr);
+                        new RemCtrlHTTPRequest().execute(urlstr);
+                    }
+                    else if (Math.abs(event.values[0]) < 1) {
+                        String urlstr = "http://192.168.178.65:8000/test?3,SERVO_NEUTRAL";
+                        mTextMessage.setText("Go Left:" + urlstr);
+                        new RemCtrlHTTPRequest().execute(urlstr);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy)
+            {
+
+            }
+        };
+
+        mTextMessage.append("");
+        // Liste der vorhandenen Sensoren ausgeben
+        //manager = getSystemService(SensorManager.class);
+        manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+
+        if (manager == null) {
+            finish();
+        }
+        List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor s : sensors)
+        {
+            mTextMessage.append(s.getName() + ": " + s.getVendor()  + ": " +  s.getVersion()  + "\n");
+
+            //if (s.getName().contains("Orientation"))
+            if (s.getName().contains("Acceleration"))
+            {
+                manager.registerListener(listener, s, SensorManager.SENSOR_DELAY_FASTEST,10);
+            }
+        }
+
+        // screen orientation sensor = 1
+        //
+        //orientation_sensor = sensors.get(1);
+
+        //manager.registerListener(listener, orientation_sensor, SensorManager.SENSOR_DELAY_GAME);
+
+
+        //
+        // Button Left
         final Button buttonLeft = findViewById(R.id.buttonLeft);
         buttonLeft.setOnClickListener(new View.OnClickListener()
         {
@@ -68,66 +240,27 @@ public class MainActivity extends AppCompatActivity
 
                 String urlstr = "http://192.168.178.65:8000/test?3,SERVO_MIN";
                 mTextMessage.setText("Go Left:" + urlstr);
+                new RemCtrlHTTPRequest().execute(urlstr);
 
 
-                new FetchWeatherData().execute();
+            }
+        });
+
+        //
+        // Button Right
+        final Button buttonRight = findViewById(R.id.buttonRight);
+        buttonRight.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
 
 
-/*
-                URL url = null;
-                try
-                {
-                    url = new URL(urlstr);
-                } catch (MalformedURLException e)
-                {
-                    e.printStackTrace();
-                }
-                HttpURLConnection urlConnection = null;
-                try
-                {
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                } catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                try
-                {
-                   // InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    // readStream(in);
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setRequestProperty("Accept", "text/html");
-                    //urlConnection.setDoOutput(true);
-                    //urlConnection.setChunkedStreamingMode(0);
-                    urlConnection.setReadTimeout(10000); // millis
-                    urlConnection.setConnectTimeout(15000); // millis
-                    //urlConnection.setDoOutput(true);
-                    urlConnection.getRequestMethod();
-
-                    urlConnection.connect();
-
-                    InputStream inputStream = urlConnection.getInputStream();
-
-                    //urlConnection.getResponseCode();
-
-                    if (urlConnection.getResponseCode() !=200)
-                    {
-                        //ok
-                    }
-                    else
-                    {
-                        //error
-                    }
+                String urlstr = "http://192.168.178.65:8000/test?3,SERVO_MAX";
+                mTextMessage.setText("Go Right:" + urlstr);
+                new RemCtrlHTTPRequest().execute(urlstr);
 
 
 
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally
-                {
-                    urlConnection.disconnect();
-                } */
             }
         });
 
@@ -135,81 +268,94 @@ public class MainActivity extends AppCompatActivity
 
     }// on create
 
+/*
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mTextMessage.setText("");
+        // Liste der vorhandenen Sensoren ausgeben
+        //manager = getSystemService(SensorManager.class);
+        manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-    private class FetchWeatherData extends AsyncTask<Void, Void, String> {
+        if (manager == null) {
+            finish();
+        }
+        List<Sensor> sensors = manager.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor s : sensors)
+        {
+            mTextMessage.append(s.getName() + ": " + s.getVendor()  + ": " +  s.getVersion()  + ": " + Boolean.toString(s.isDynamicSensor()) + "\n");
+        }
+        // Helligkeitssensor ermitteln
+        /*
+        sensor = manager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if (sensor != null) {
+            listener = new SensorEventListener() {
 
-       // @Override
-        protected String doInBackground(Void... params) {
-            // These two need to be declared outside the try/catch
-            // so that they can be closed in the finally block.
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            // Will contain the raw JSON response as a string.
-            String forecastJsonStr = null;
-
-            try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
-                URL url = new URL("http://192.168.178.65:8000/test?3,SERVO_MIN");
-
-                // Create the request to OpenWeatherMap, and open the connection
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                // Read the input stream into a String
-                InputStream inputStream = urlConnection.getInputStream();
-                StringBuffer buffer = new StringBuffer();
-                if (inputStream == null) {
-                    // Nothing to do.
-                    return null;
-                }
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
-                    // But it does make debugging a *lot* easier if you print out the completed
-                    // buffer for debugging.
-                    buffer.append(line + "\n");
+                @Override
+                public void onAccuracyChanged(Sensor sensor,
+                                              int accuracy) {
+                    Log.d(TAG, "onAccuracyChanged(): " + accuracy);
                 }
 
-                if (buffer.length() == 0) {
-                    // Stream was empty.  No point in parsing.
-                    return null;
-                }
-                forecastJsonStr = buffer.toString();
-                return forecastJsonStr;
-            } catch (IOException e) {
-                Log.e("PlaceholderFragment", "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
-                // to parse it.
-                return null;
-            } finally{
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    } catch (final IOException e) {
-                        Log.e("PlaceholderFragment", "Error closing stream", e);
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    if (event.values.length > 0) {
+                        float light = event.values[0];
+                        String text = Float.toString(light);
+                        if ((SensorManager.LIGHT_SUNLIGHT <= light)
+                                && (light <=
+                                SensorManager.LIGHT_SUNLIGHT_MAX)) {
+                            text = "sunny";
+                        }
+                        // jeden Wert nur einmal ausgeben
+                        if (!hm.containsKey(text)) {
+                            hm.put(text, Boolean.TRUE);
+                            text += "\n";
+                            mTextMessage.append(text);
+                        }
                     }
                 }
-            }
-        }
-/*
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            tvWeatherJson.setText(s);
-            Log.i("json", s);
+            };
+            // Listener registrieren
+            manager.registerListener(listener, sensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            mTextMessage.append("No Sensor");
         } */
+        /*
+        // Callback für dynamische Sensoren
+        callback = null;
+        if (manager.isDynamicSensorDiscoverySupported()) {
+            callback = new SensorManager.DynamicSensorCallback() {
+
+                @Override
+                public void onDynamicSensorConnected(Sensor sensor) {
+                    mTextMessage.append("Connected "+ sensor.getName());
+                }
+
+                @Override
+                public void onDynamicSensorDisconnected(Sensor sensor) {
+                    mTextMessage.append("disconnected " + sensor.getName());
+                }
+            };
+            manager.registerDynamicSensorCallback(callback,
+                    new Handler());
+        }*/
     }
 
+    /*
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        if (sensor != null) {
+            manager.unregisterListener(listener);
+        }
+      //  if (callback != null) {
+      //      manager.unregisterDynamicSensorCallback(callback);
+      //  }
+    }
+*/
 
 
-
-}
+//}// end of class
